@@ -99,6 +99,10 @@ func (c *client) Type() int {
 	return quiver.UseIPv4Proxy
 }
 
+func (c *client) Name() string {
+	return "proxy.webshare.io"
+}
+
 func (c *client) Total() int {
 	c.proxiesMu.Lock()
 	defer c.proxiesMu.Unlock()
