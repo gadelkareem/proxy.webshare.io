@@ -8,6 +8,10 @@ import (
 )
 
 func TestNewClient(t *testing.T) {
+	u := os.Getenv("PW_URL")
+	if u == "" {
+		panic("Please provide a proxy.webshare.io download list URL")
+	}
 	c, err := p.NewClient(os.Getenv("PW_URL"), nil)
 	if err != nil {
 		t.Error(err)
@@ -24,7 +28,7 @@ func TestNewClient(t *testing.T) {
 	}
 	tl := c.Total()
 	fmt.Printf("Got %d proxies \n", tl)
-	if tl < 100{
+	if tl < 100 {
 		t.Error("Invalid number of proxies")
 	}
 }
