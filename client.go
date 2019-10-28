@@ -38,7 +38,7 @@ func NewClient(listUrl string, cl *http.Client) (c *client, err error) {
 		cl = http.DefaultClient
 	}
 
-	f, err := cachita.NewFileCache("/tmp/proxy_webshare_io", 12*time.Hour, 5*time.Minute)
+	f, err := cachita.NewFileCache("/tmp/proxy_webshare_io", 24*time.Hour, 1*time.Hour)
 	if err != nil {
 		return nil, err
 	}
@@ -66,6 +66,9 @@ func (c *client) List() (map[string]*url.URL, error) {
 	}
 
 	lines := strings.Split(string(b), "\n")
+
+	_, err = h.LiftRLimits()
+	h.PanicOnError(err)
 
 	wg := h.NewWgExec(50)
 	for _, l := range lines {
@@ -173,6 +176,7 @@ func proxyIp(proxyUrl *url.URL) (ip string, err error) {
 		return
 	}
 	defer r.Body.Close()
+
 	b, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		return
