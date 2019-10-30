@@ -73,7 +73,7 @@ func (c *client) List() (map[string]*url.URL, error) {
 	_, err = h.LiftRLimits()
 	h.PanicOnError(err)
 
-	wg := h.NewWgExec(1)
+	wg := h.NewWgExec(50)
 	var l string
 	for scanner.Scan() {
 		l = scanner.Text()
