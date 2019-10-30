@@ -84,7 +84,7 @@ func (c *client) List() (map[string]*url.URL, error) {
 			line := p[0].(string)
 			ip, u, err := parseProxyLine(line)
 			if err != nil {
-				fmt.Fprintf(os.Stderr, err.Error(), "\n")
+				fmt.Fprintf(os.Stderr, err.Error()+"\n")
 				return
 			}
 			c.proxiesMu.Lock()
