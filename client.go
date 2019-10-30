@@ -1,6 +1,8 @@
 package proxy_webshare_io
 
 import (
+	"bufio"
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -15,6 +17,7 @@ import (
 	"net/url"
 	"os"
 	"runtime"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -65,13 +68,15 @@ func (c *client) List() (map[string]*url.URL, error) {
 		return nil, err
 	}
 
-	lines := strings.Split(string(b), "\n")
+	scanner := bufio.NewScanner(bytes.NewReader(b))
 
 	_, err = h.LiftRLimits()
 	h.PanicOnError(err)
 
-	wg := h.NewWgExec(50)
-	for _, l := range lines {
+	wg := h.NewWgExec(1)
+	var l string
+	for scanner.Scan() {
+		l = scanner.Text()
 		if l == "" {
 			continue
 		}
@@ -79,7 +84,7 @@ func (c *client) List() (map[string]*url.URL, error) {
 			line := p[0].(string)
 			ip, u, err := parseProxyLine(line)
 			if err != nil {
-				fmt.Fprintf(os.Stderr, err.Error())
+				fmt.Fprintf(os.Stderr, err.Error(), "\n")
 				return
 			}
 			c.proxiesMu.Lock()
@@ -140,18 +145,35 @@ func (c *client) putListCache(k string) error {
 	return nil
 }
 
-func parseProxyLine(line string) (ip string, u *url.URL, err error) {
+func parseProxyLine(line string) (ipStr string, u *url.URL, err error) {
 	s := strings.Split(strings.TrimSpace(line), ":")
-
-	if len(s) != 4 {
+	if len(s) < 2 {
 		return "", nil, fmt.Errorf("invalid proxy line %s", line)
 	}
-	lu := fmt.Sprintf("http://%s:%s@%s:%s", s[2], s[3], s[0], s[1])
+	ip := net.ParseIP(s[0])
+	if ip == nil {
+		return "", nil, fmt.Errorf("invalid IP line %s", line)
+	}
+	port, err := strconv.ParseInt(s[1], 10, 64)
+	if err != nil {
+		return "", nil, fmt.Errorf("invalid port line %s", line)
+	}
+
+	var lu string
+	switch len(s) {
+	case 4:
+		lu = fmt.Sprintf("http://%s:%s@%s:%d", s[2], s[3], ip, port)
+	case 2:
+		lu = fmt.Sprintf("http://%s:%d", ip, port)
+	default:
+		return "", nil, fmt.Errorf("invalid proxy line %s", line)
+	}
+
 	u, err = url.Parse(lu)
 	if err != nil {
 		return "", nil, fmt.Errorf("%s parsing line %s URL %s", err, line, lu)
 	}
-	ip, err = proxyIp(u)
+	ipStr, err = proxyIp(u)
 	if err != nil {
 		return "", nil, fmt.Errorf("%s getting IP for line %s URL %s", err, line, lu)
 	}
