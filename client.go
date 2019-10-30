@@ -12,12 +12,10 @@ import (
 	"github.com/gadelkareem/quiver"
 	"io"
 	"io/ioutil"
-	"net"
 	"net/http"
 	"net/url"
 	"os"
 	"runtime"
-	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -147,24 +145,13 @@ func (c *client) putListCache(k string) error {
 
 func parseProxyLine(line string) (ipStr string, u *url.URL, err error) {
 	s := strings.Split(strings.TrimSpace(line), ":")
-	if len(s) < 2 {
-		return "", nil, fmt.Errorf("invalid proxy line %s", line)
-	}
-	ip := net.ParseIP(s[0])
-	if ip == nil {
-		return "", nil, fmt.Errorf("invalid IP line %s", line)
-	}
-	port, err := strconv.ParseInt(s[1], 10, 64)
-	if err != nil {
-		return "", nil, fmt.Errorf("invalid port line %s", line)
-	}
 
 	var lu string
 	switch len(s) {
 	case 4:
-		lu = fmt.Sprintf("http://%s:%s@%s:%d", s[2], s[3], ip, port)
+		lu = fmt.Sprintf("http://%s:%s@%s:%s", s[2], s[3], s[0], s[1])
 	case 2:
-		lu = fmt.Sprintf("http://%s:%d", ip, port)
+		lu = fmt.Sprintf("http://%s:%s", s[0], s[1])
 	default:
 		return "", nil, fmt.Errorf("invalid proxy line %s", line)
 	}
@@ -207,7 +194,7 @@ func proxyIp(proxyUrl *url.URL) (ip string, err error) {
 		return "", fmt.Errorf("invalid Status Code: %d", r.StatusCode)
 	}
 	ip = strings.TrimSpace(string(b))
-	if net.ParseIP(ip) == nil {
+	if !h.IsValidIp(ip) {
 		return "", fmt.Errorf("invalid IP: %s", ip)
 	}
 
