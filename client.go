@@ -47,7 +47,7 @@ func NewClient(listUrl string, cl *http.Client) (c *client, err error) {
 }
 
 func (c *client) List() (map[string]*url.URL, error) {
-	k := "list"
+	k := fmt.Sprintf("list_%s", c.listUrl)
 	err := c.getListCache(k)
 	if err != nil && !cachita.IsErrorOk(err) {
 		return nil, err
