@@ -160,10 +160,11 @@ func parseProxyLine(line string) (ipStr string, u *url.URL, err error) {
 	if err != nil {
 		return "", nil, fmt.Errorf("%s parsing line %s URL %s", err, line, lu)
 	}
-	ipStr, err = proxyIp(u)
-	if err != nil {
-		return "", nil, fmt.Errorf("%s getting IP for line %s URL %s", err, line, lu)
-	}
+	ipStr = lu
+	//ipStr, err = proxyIp(u)
+	//if err != nil {
+	//	return "", nil, fmt.Errorf("%s getting IP for line %s URL %s", err, line, lu)
+	//}
 
 	return
 }

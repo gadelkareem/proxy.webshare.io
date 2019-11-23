@@ -12,7 +12,7 @@ func TestNewClient(t *testing.T) {
 	if u == "" {
 		panic("Please provide a proxy.webshare.io download list URL")
 	}
-	c, err := p.NewClient(os.Getenv("PW_URL"), nil)
+	c, err := p.NewClient(u, nil)
 	if err != nil {
 		t.Error(err)
 		return
