@@ -1,10 +1,10 @@
-package proxy_webshare_io_test
+package proxy_webshare_io
 
 import (
 	"fmt"
-	p "github.com/gadelkareem/proxy.webshare.io"
 	"os"
 	"testing"
+
 )
 
 func TestNewClient(t *testing.T) {
@@ -12,7 +12,7 @@ func TestNewClient(t *testing.T) {
 	if u == "" {
 		panic("Please provide a proxy.webshare.io download list URL")
 	}
-	c, err := p.NewClient(u, nil)
+	c, err := NewClient(u, nil)
 	if err != nil {
 		t.Error(err)
 		return

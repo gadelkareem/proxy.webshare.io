@@ -6,12 +6,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/cenkalti/backoff"
-	"github.com/gadelkareem/cachita"
-	h "github.com/gadelkareem/go-helpers"
-	"github.com/gadelkareem/quiver"
 	"io"
 	"io/ioutil"
+	"net"
 	"net/http"
 	"net/url"
 	"os"
@@ -19,6 +16,11 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/cenkalti/backoff"
+	"github.com/gadelkareem/cachita"
+	h "github.com/gadelkareem/go-helpers"
+	"github.com/gadelkareem/quiver"
 )
 
 const (
@@ -160,11 +162,11 @@ func parseProxyLine(line string) (ipStr string, u *url.URL, err error) {
 	if err != nil {
 		return "", nil, fmt.Errorf("%s parsing line %s URL %s", err, line, lu)
 	}
-	ipStr = lu
+	ipStr, _, err = net.SplitHostPort(u.Host)
 	//ipStr, err = proxyIp(u)
-	//if err != nil {
-	//	return "", nil, fmt.Errorf("%s getting IP for line %s URL %s", err, line, lu)
-	//}
+	if err != nil {
+		return "", nil, fmt.Errorf("%s getting IP for line %s URL %s", err, line, lu)
+	}
 
 	return
 }
