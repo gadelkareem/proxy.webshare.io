@@ -6,12 +6,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/cenkalti/backoff"
-	"github.com/gadelkareem/cachita"
-	h "github.com/gadelkareem/go-helpers"
-	"github.com/gadelkareem/quiver"
 	"io"
 	"io/ioutil"
+	"net"
 	"net/http"
 	"net/url"
 	"os"
@@ -19,7 +16,11 @@ import (
 	"strings"
 	"sync"
 	"time"
-	"net"
+
+	"github.com/cenkalti/backoff"
+	"github.com/gadelkareem/cachita"
+	h "github.com/gadelkareem/go-helpers"
+	"github.com/gadelkareem/quiver"
 )
 
 const (
