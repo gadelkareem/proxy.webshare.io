@@ -1,4 +1,4 @@
-module github.com/gadelkareem/proxy.webshare.io_1
+module github.com/gadelkareem/proxy.webshare.io
 
 go 1.16
 
