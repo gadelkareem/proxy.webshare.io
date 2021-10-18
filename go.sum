@@ -44,8 +44,6 @@ github.com/gadelkareem/go-helpers v0.0.0-20191001005417-e8a6f26af331/go.mod h1:C
 github.com/gadelkareem/go-helpers v0.0.0-20191028141354-37da31be3be9/go.mod h1:NQj6Txfr/VxtlQDQoy14/d6/MyZ5nZX0EatXIVklKpo=
 github.com/gadelkareem/go-helpers v0.0.0-20200725110331-77a434fc0423 h1:eERtwaJW5EGq/2DH0WzoxQXPaz7kD4N5z8p/qJ2rHfU=
 github.com/gadelkareem/go-helpers v0.0.0-20200725110331-77a434fc0423/go.mod h1:NQj6Txfr/VxtlQDQoy14/d6/MyZ5nZX0EatXIVklKpo=
-github.com/gadelkareem/proxy.webshare.io v0.0.0-20191026233143-99e212cfb163/go.mod h1:upGgAwi+MWE+4bZga82IRwUZm/0/Lu0zfuTqS03tKTg=
-github.com/gadelkareem/proxy.webshare.io v0.0.0-20211018072907-593d85159cd1/go.mod h1:JQ4RLwlUnCvfurkTrE7NalvSEnC6ZcVbq76doaF0LH4=
 github.com/gadelkareem/quiver v0.0.0-20190920102459-ce47163ff985/go.mod h1:n7HaT7SsSsyhcOTzp36w/1HFiSSpIp5uoSPCWesuwlY=
 github.com/gadelkareem/quiver v0.0.0-20191027120636-1876d28cdb65/go.mod h1:pfanQR32UOWErbb+oSpoGK83I9XeUkBUTJNHyWxn37E=
 github.com/gadelkareem/quiver v0.0.0-20211018083207-68c4a726ea91 h1:b0zXKey47Ha77dvOuRjmxc3Eokolt9ImcmVO5yfsRzM=
