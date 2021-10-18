@@ -19,6 +19,7 @@ import (
 	"strings"
 	"sync"
 	"time"
+	"net"
 )
 
 const (
@@ -160,11 +161,11 @@ func parseProxyLine(line string) (ipStr string, u *url.URL, err error) {
 	if err != nil {
 		return "", nil, fmt.Errorf("%s parsing line %s URL %s", err, line, lu)
 	}
-	ipStr = lu
+	ipStr, _, err = net.SplitHostPort(u.Host)
 	//ipStr, err = proxyIp(u)
-	//if err != nil {
-	//	return "", nil, fmt.Errorf("%s getting IP for line %s URL %s", err, line, lu)
-	//}
+	if err != nil {
+		return "", nil, fmt.Errorf("%s getting IP for line %s URL %s", err, line, lu)
+	}
 
 	return
 }
