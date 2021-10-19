@@ -41,7 +41,7 @@ func NewClient(listUrl string, cl *http.Client) (c *client, err error) {
 		cl = http.DefaultClient
 	}
 
-	f, err := cachita.NewFileCache("/tmp/proxy_webshare_io", 24*time.Hour, 1*time.Hour)
+	f, err := cachita.NewFileCache("/tmp/proxy_webshare_io", 1*time.Hour, 5*time.Minute)
 	if err != nil {
 		return nil, err
 	}
